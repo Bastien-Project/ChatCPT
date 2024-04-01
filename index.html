@@ -61,6 +61,43 @@
         let randomResponse = false;
         let audio = '';
 
+        // Function to display a random gif
+        var displayedGif = [];
+
+        function displayGif() {
+            var gif = [
+                '<img src="/images/CPT0.gif" alt="Gif CPT 0">',
+                '<img src="/images/CPT1.gif" alt="Gif CPT 1">',
+                '<img src="/images/CPT2.gif" alt="Gif CPT 2">',
+                '<img src="/images/CPT3.gif" alt="Gif CPT 3">',
+                '<img src="/images/CPT4.gif" alt="Gif CPT 4">',
+                '<img src="/images/CPT5.gif" alt="Gif CPT 5">',
+                '<img src="/images/CPT6.gif" alt="Gif CPT 6">',
+                '<img src="/images/CPT7.gif" alt="Gif CPT 7">',
+                '<img src="/images/CPT8.gif" alt="Gif CPT 8">',
+                '<img src="/images/CPT9.gif" alt="Gif CPT 9">',
+                '<img src="/images/CPT10.gif" alt="Gif CPT 10">'
+            ];
+
+            if (displayedGif.length == gif.length) {
+                displayedGif = [];
+            }
+
+            var choice;
+            do {
+                choice = Math.floor(Math.random() * gif.length);
+            } while (displayedGif.includes(choice));
+            
+            displayedGif.push(choice);
+
+            if (choice >= 0 && choice < gif.length) {
+                return gif[choice];
+            } else {
+                return 'Error, you broke even more ChatCPT.';
+            }
+        }
+
+
         function handleSubmit(event) {
             event.preventDefault(); // Prevent refresh on form submission
 
@@ -124,8 +161,12 @@
                 } else if (userString.split(' ').length > 200) {
                     response = "Ok." + userString.split(' ').length;
                 } else {
+                    if (Math.round(Math.random()*10) == 0) {
+                    response = displayGif();
+                    } else {
                     randomResponse = true;
-                    var response = randomPhrase();
+                    response = randomPhrase();
+                    }
                 }
 
                 // Show the ChatCPT response in a new chat-gpt-bubble, wrapped in a chat-bubble-container
