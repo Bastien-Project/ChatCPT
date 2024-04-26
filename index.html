@@ -60,6 +60,7 @@
         let userIsNaze = false;
         let randomResponse = false;
         let audio = '';
+        let gif = true;
 
         // Function to display a random gif
         var displayedGif = [];
@@ -87,7 +88,7 @@
             do {
                 choice = Math.floor(Math.random() * gif.length);
             } while (displayedGif.includes(choice));
-            
+
             displayedGif.push(choice);
 
             if (choice >= 0 && choice < gif.length) {
@@ -150,6 +151,8 @@
                     return phrase;
                 }
 
+                randomResponse = false;
+
                 if (userString === 'Heil Hitler' && userIsNaze == false) { // Hurray you found some easter eggs🐰🥚
                     response = "Welcome to the circle of legends.";
                     userIsNaze = true;
@@ -158,14 +161,23 @@
                 } else if (userString.replace(/[\.,!?"']/g, '').toLowerCase() == "coucou") {
                     response = '<img src="./images/coucou-jirachie.gif" alt="Description de l\'image">';
                     audio = new Audio("./images/coucou-miss-jirachi.mp3");
+                    audio.play();
+                } else if (userString === "CPT") {
+                    gif = false;
+                    response = displayGif();
                 } else if (userString.split(' ').length > 200) {
                     response = "Ok." + userString.split(' ').length;
                 } else {
-                    if (Math.round(Math.random()*3) === 1) {
-                    response = displayGif();
+                    if (gif) {
+                        if (Math.round(Math.random() * 3) === 1) {
+                            response = displayGif();
+                        } else {
+                            randomResponse = true;
+                            response = randomPhrase();
+                        }
                     } else {
-                    randomResponse = true;
-                    response = randomPhrase();
+                        randomResponse = true;
+                        response = randomPhrase();
                     }
                 }
 
@@ -184,7 +196,6 @@
 
                 if (!randomResponse) {
                     newBubble2.innerHTML = response; // If the response is not random, show it immediately
-                    audio.play();
                 }
                 else {
                     let meowLoop = setInterval(() => { // Interval to show more of the reply every 100 milliseconds (simulating typing behaviour)
@@ -243,6 +254,9 @@
             createLine(0); // Start creating the respone with the first line
         }
     </script>
+
+    <script type="text/javascript" src="script.js"> </script>
+
 </body>
 
 </html>
