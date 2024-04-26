@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background:
+        linear-gradient(rgba(184, 192, 230, 1),
+          rgba(165, 164, 177, 1));
+      overflow: hidden;
+      padding: 0;
+      margin: 0;
+    }
+
+    .countdowncontainer {
+      display: flex;
+      text-align: center;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+    }
+
+    .container.countdown {
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      background-image:
+        url("./images/learn-more.gif");
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+      justify-content: center;
+      display: flex;
+    }
+
+    .clock_bg {
+      border-radius: 7px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      background-color: #333;
+      color: white;
+    }
+
+    .clock_counter {
+      font-size: 30px;
+      margin-bottom: 5px;
+    }
+
+    .clock_label {
+      font-size: 13px;
+    }
+
+    #demo {
+      font-size: 12px;
+      font-weight: 400;
+      color: #fff;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container countdown">
+    <div id="demo"></div>
+    <div class="countdowncontainer">
+      <div id="weeks" class="clock_bg">
+        <div class="clock_counter"></div>
+        <div class="clock_label">semaines</div>
+      </div>
+      <div id="days" class="clock_bg">
+        <div class="clock_counter"></div>
+        <div class="clock_label">jours</div>
+      </div>
+      <div id="hours" class="clock_bg">
+        <div class="clock_counter"></div>
+        <div class="clock_label">heures</div>
+      </div>
+      <div id="minutes" class="clock_bg">
+        <div class="clock_counter"></div>
+        <div class="clock_label">minutes</div>
+      </div>
+      <div id="seconds" class="clock_bg">
+        <div class="clock_counter"></div>
+        <div class="clock_label">secondes</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const currentTime = new Date();
+    const currentDay = currentTime.getDay();
+
+    // Déterminer le dernier lundi à 9h00
+    let lastMonday = new Date(currentTime);
+    lastMonday.setDate(currentTime.getDate() - (currentDay + 6) % 7); // Définir la date au dernier lundi
+    lastMonday.setHours(9, 0, 0, 0); // Définir l'heure à 9h00
+    const lastMondayDate = lastMonday.toISOString().slice(0, 19).replace('T', ' '); // Formater la date au format 'Y-m-d H:i:s'
+
+    // Déterminer le prochain lundi à 9h00
+    let nextMonday = new Date(currentTime);
+    nextMonday.setDate(currentTime.getDate() + (8 - currentDay) % 7); // Définir la date au prochain lundi
+    nextMonday.setHours(9, 0, 0, 0); // Définir l'heure à 9h00
+    const nextMondayDate = nextMonday.toISOString().slice(0, 19).replace('T', ' '); // Formater la date au format 'Y-m-d H:i:s'
+
+    // Déterminer le dernier vendredi à 17h00
+    let lastFriday = new Date(currentTime);
+    lastFriday.setDate(currentTime.getDate() - (currentDay + 3) % 7); // Définir la date au dernier vendredi
+    lastFriday.setHours(17, 0, 0, 0); // Définir l'heure à 17h00
+    const lastFridayDate = lastFriday.toISOString().slice(0, 19).replace('T', ' '); // Formater la date au format 'Y-m-d H:i:s'
+
+    // Déterminer le prochain vendredi à 17h00
+    let nextFriday = new Date(currentTime);
+    nextFriday.setDate(currentTime.getDate() + (5 - currentDay) % 7); // Définir la date au prochain vendredi
+    nextFriday.setHours(17, 0, 0, 0); // Définir l'heure à 17h00
+    const nextFridayDate = nextFriday.toISOString().slice(0, 19).replace('T', ' '); // Formater la date au format 'Y-m-d H:i:s'
+
+    // Set the date we're counting down to
+    function minTwoDigits(n) {
+      return (n < 10 ? '0' : '') + n;
+    }
+
+    var now = new Date().getTime();
+
+    if (lastFriday < now && now < nextMonday) {
+      countDownDate = nextMonday.getTime();
+    }
+
+    if (lastMonday < now && now < nextFriday) {
+      countDownDate = nextFriday.getTime();
+    }
+
+    // Update the count down every 1 second
+    var x = setInterval(function () {
+
+      // Get today's date and time
+      var now = new Date().getTime();
+
+      console.log(now);
+
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var weeks = Math.floor(days / 7);
+      days = days % 7;
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      var counterWeekElement = document.getElementById("weeks").querySelector(".clock_counter");
+      counterWeekElement.innerText = minTwoDigits(weeks);
+
+      var counterDaysElement = document.getElementById("days").querySelector(".clock_counter");
+      counterDaysElement.innerText = minTwoDigits(days);
+
+      var counterHoursElement = document.getElementById("hours").querySelector(".clock_counter");
+      counterHoursElement.innerText = minTwoDigits(hours);
+
+      var counterMinutesElement = document.getElementById("minutes").querySelector(".clock_counter");
+      counterMinutesElement.innerText = minTwoDigits(minutes);
+
+      var counterSecondsElement = document.getElementById("seconds").querySelector(".clock_counter");
+      counterSecondsElement.innerText = minTwoDigits(seconds);
+
+      // If the count down is over, write some text 
+      /*       if (distance < 0) {
+        
+              document.getElementById("demo").innerHTML = "EXPIRED";
+            } */
+
+      var lastMonday = new Date(lastMondayDate).getTime();
+      var nextMonday = new Date(nextMondayDate).getTime();
+      var lastFriday = new Date(lastFridayDate).getTime();
+      var nextFriday = new Date(nextFridayDate).getTime();
+
+      if (lastFriday < now && now < nextMonday) {
+        document.getElementById("demo").innerHTML = "DSIPO PENDANT ENCORE :";
+      }
+
+      if (lastMonday < now && now < nextFriday) {
+        document.getElementById("demo").innerHTML = "INDISPO PENDANT ENCORE :";
+      }
+
+    },
+      1000);
+  </script>
+
+</body>
+
+</html>
