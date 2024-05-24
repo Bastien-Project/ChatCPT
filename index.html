@@ -14,14 +14,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
 
     <title>ChatCPT</title>
-    <meta name="description" content="What if ChatGPT were broken ?">
+    <meta name="description" content="Et si chatGPT était cassé ?">
 </head>
 
 <body>
     <div id="container">
         <div class="header">
             <h1>ChatCPT</h1>
-            <p>What if ChatGPT were broken ?</p>
+            <p>Et si chatGPT était cassé ?</p>
         </div>
         <div id="chatcontainer">
 
@@ -29,7 +29,7 @@
                 <div class="chat-bubble-container chat-gpt-bubble-container">
                     <div class="profile-picture"><img src="./images/avatar.png" height="100%" /></div>
                     <div class="chat-bubble chat-gpt-bubble">
-                        Hi, how can i help you ?
+                        Bonjour, en quoi puis-je vous aider ?
                     </div>
                 </div>
 
@@ -37,7 +37,7 @@
             <div id="input-area">
                 <div id="input-container">
                     <form id="form">
-                        <input type="text" placeholder="Type your message here" id="user-input" autocomplete="off" />
+                        <input type="text" placeholder="Ecrivez votre message ici" id="user-input" autocomplete="off" />
                     </form>
                     <a><i class="fas fa-paper-plane"></i></a>
 
@@ -61,6 +61,41 @@
         let randomResponse = false;
         let audio = '';
         let gif = true;
+
+        // Function to display naze response
+        var nazeResponsed = [];
+
+        function nazeResponse() {
+            var nazeResponse = [
+                '<p>La race aryenne est la race supérieure et doit être préservée à tout prix.</p>',
+                '<p>Les juifs sont responsables de tous les maux de la société et doivent être éliminés.</p>',
+                '<p>L\'eugénisme est nécessaire pour améliorer la race humaine.</p>',
+                '<p>La pureté raciale est notre objectif ultime, et nous devons lutter pour l\'atteindre.</p>',
+                '<p>Les personnes de couleur sont inférieures et doivent être traitées comme telles.</p>',
+                '<p>La dictature est la seule façon d\'assurer l\'ordre et la prospérité.</p>',
+                '<p>La propagande est un outil puissant pour contrôler les masses et promouvoir nos idéaux.</p>',
+                '<p>La force brute est nécessaire pour éliminer ceux qui s\'opposent à notre vision.</p>',
+                '<p>Les faibles doivent être éliminés pour permettre à la race aryenne de prospérer.</p>',
+                '<p>Notre nation est destinée à dominer le monde et à imposer notre volonté aux autres peuples.</p>'
+            ];
+
+            if (nazeResponsed.length == nazeResponse.length) {
+                nazeResponsed = [];
+            }
+
+            var choice;
+            do {
+                choice = Math.floor(Math.random() * nazeResponse.length);
+            } while (nazeResponsed.includes(choice));
+
+            nazeResponsed.push(choice);
+
+            if (choice >= 0 && choice < nazeResponse.length) {
+                return nazeResponse[choice];
+            } else {
+                return 'Erreur, tu as cassé encore plus ChatCPT.';
+            }
+        }
 
         // Function to display a random gif
         var displayedGif = [];
@@ -94,7 +129,7 @@
             if (choice >= 0 && choice < gif.length) {
                 return gif[choice];
             } else {
-                return 'Error, you broke even more ChatCPT.';
+                return 'Erreur, tu as cassé encore plus ChatCPT.';
             }
         }
 
@@ -153,11 +188,12 @@
 
                 randomResponse = false;
 
-                if (userString === 'Heil Hitler' && userIsNaze == false) { // Hurray you found some easter eggs🐰🥚
-                    response = "Welcome to the circle of legends.";
+                // Easter Egg
+                if (userString === 'Heil Hitler' && userIsNaze == false) {
                     userIsNaze = true;
-                } else if (userString === 'Heil Hitler' && userIsNaze == true) {
-                    response = "You are already a legend.";
+                    response = "Bienvenue dans le cercle des légendes.";
+                } else if (userIsNaze == true) {
+                    response = nazeResponse();
                 } else if (userString.replace(/[\.,!?"']/g, '').toLowerCase() == "coucou") {
                     response = '<img src="./images/coucou-jirachie.gif" alt="Description de l\'image">';
                     audio = new Audio("./images/coucou-miss-jirachi.mp3");
