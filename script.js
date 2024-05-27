@@ -37,20 +37,19 @@ var x = setInterval(function () {
     // Set the date we're counting down to
 
     var now = new Date().getTime();
+    var file = (window.location.href).substr(0, ((window.location.href).lastIndexOf("/")) + 1);
 
     if (lastMonday < now && now < nextFriday) {
-        if (location.href == 'http://127.0.0.1:3000/countdown.html') {
-            window.location.href = 'http://127.0.0.1:3000/index.html';
+        if (location.href == file + 'countdown.html') {
+            window.location.href = file + 'index.html';
         }
         countDownDate = nextFriday.getTime();
-        console.log("1" + location.href);
     }
     else if (lastFriday < now && now < nextMonday) {
-        if (location.href == 'http://127.0.0.1:3000/index.html') {
-            window.location.href = 'http://127.0.0.1:3000/countdown.html';
+        if (location.href == file + 'index.html') {
+            window.location.href = file + 'countdown.html';
         }
         countDownDate = nextMonday.getTime();
-        console.log("2" + location.href);
     }
 
     /* END ADD BY ME */
@@ -69,7 +68,7 @@ var x = setInterval(function () {
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    if (location.href == 'http://127.0.0.1:3000/countdown.html') {
+    if (location.href == file + 'countdown.html') {
         var counterWeekElement = document.getElementById("weeks").querySelector(".clock_counter");
         counterWeekElement.innerText = minTwoDigits(weeks);
 
