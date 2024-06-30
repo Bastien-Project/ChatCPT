@@ -14,44 +14,38 @@ var x = setInterval(function () {
     var lastMonday = new Date(currentTime);
     lastMonday.setDate(currentTime.getDate() - (currentDay + 6) % 7); // Définir la date au dernier lundi
     lastMonday.setHours(9, 0, 0, 0); // Définir l'heure à 9h00
-    var lastMondayDate = lastMonday.toISOString().slice(0, 19).replace('T', ' '); // Formater la date au format 'Y-m-d H:i:s'
 
     // Déterminer le prochain lundi à 9h00
     var nextMonday = new Date(currentTime);
     nextMonday.setDate(currentTime.getDate() + (8 - currentDay) % 7); // Définir la date au prochain lundi
     nextMonday.setHours(9, 0, 0, 0); // Définir l'heure à 9h00
-    var nextMondayDate = nextMonday.toISOString().slice(0, 19).replace('T', ' '); // Formater la date au format 'Y-m-d H:i:s'
 
     // Déterminer le dernier vendredi à 17h00
     var lastFriday = new Date(currentTime);
     lastFriday.setDate(currentTime.getDate() - (currentDay + 3) % 7); // Définir la date au dernier vendredi
     lastFriday.setHours(17, 0, 0, 0); // Définir l'heure à 17h00
-    var lastFridayDate = lastFriday.toISOString().slice(0, 19).replace('T', ' '); // Formater la date au format 'Y-m-d H:i:s'
 
     // Déterminer le prochain vendredi à 17h00
     var nextFriday = new Date(currentTime);
     nextFriday.setDate(currentTime.getDate() + (5 - currentDay) % 7); // Définir la date au prochain vendredi
     nextFriday.setHours(17, 0, 0, 0); // Définir l'heure à 17h00
-    var nextFridayDate = nextFriday.toISOString().slice(0, 19).replace('T', ' '); // Formater la date au format 'Y-m-d H:i:s'
 
     // Set the date we're counting down to
 
     var now = new Date().getTime();
     var file = (window.location.href).substr(0, ((window.location.href).lastIndexOf("/")) + 1);
 
-    if (lastMonday < now && now < nextFriday) {
+    if (lastFriday < now && now < nextMonday) {
+        if (location.href == file + 'index.html') {
+            window.location.href = file + 'countdown.html';
+        }
+        countDownDate = nextMonday.getTime();
+    } else if (lastMonday < now && now < nextFriday) {
         if (location.href == file + 'countdown.html') {
             window.location.href = file + 'index.html';
         }
         countDownDate = nextFriday.getTime();
     }
-    else if (lastFriday < now && now < nextMonday) {
-        if (location.href == file + 'index.html') {
-            window.location.href = file + 'countdown.html';
-        }
-        countDownDate = nextMonday.getTime();
-    }
-
     /* END ADD BY ME */
 
     // Get today's date and time
