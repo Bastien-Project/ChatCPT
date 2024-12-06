@@ -1,3 +1,6 @@
+if (window.location.pathname === "/") {
+    window.location.href = "/index.html";
+}
 
 function minTwoDigits(n) {
     return (n < 10 ? '0' : '') + n;
@@ -22,7 +25,7 @@ var x = setInterval(function () {
 
     // Déterminer le dernier vendredi à 17h00
     var lastFriday = new Date(currentTime);
-    lastFriday.setDate(currentTime.getDate() - (currentDay + 3) % 7); // Définir la date au dernier vendredi
+    lastFriday.setDate(currentTime.getDate() - (currentDay + 2) % 7); // Définir la date au dernier vendredi
     lastFriday.setHours(17, 0, 0, 0); // Définir l'heure à 17h00
 
     // Déterminer le prochain vendredi à 17h00
@@ -31,20 +34,19 @@ var x = setInterval(function () {
     nextFriday.setHours(17, 0, 0, 0); // Définir l'heure à 17h00
 
     // Set the date we're counting down to
-
     var now = new Date().getTime();
     var file = (window.location.href).substr(0, ((window.location.href).lastIndexOf("/")) + 1);
 
-    if (lastFriday < now && now < nextMonday) {
-        if (location.href == file + 'index.html') {
-            window.location.href = file + 'countdown.html';
-        }
-        countDownDate = nextMonday.getTime();
-    } else if (lastMonday < now && now < nextFriday) {
+    if (lastMonday < now && now < nextFriday) {
         if (location.href == file + 'countdown.html') {
             window.location.href = file + 'index.html';
         }
         countDownDate = nextFriday.getTime();
+    } else if (lastFriday < now && now < nextMonday) {
+        if (location.href == file + 'index.html') {
+            window.location.href = file + 'countdown.html';
+        }
+        countDownDate = nextMonday.getTime();
     }
     /* END ADD BY ME */
 
