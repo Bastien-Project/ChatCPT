@@ -191,3 +191,90 @@ body {
   color: #818f7b;
 
 }
+
+/* Animation */
+
+/* Bouton */
+/*#launchButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  font-size: 16px;
+  background-color: orange;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 10;
+}*/
+
+/* Conteneur de l'animation */
+#animationContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  /* Caché par défaut */
+}
+
+/* Avion */
+/*#plane {
+  position: fixed;
+  bottom: 60px;
+  right: 280px;
+  width: 50px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}*/
+
+:root {
+  --calc-x: calc(100vw*0.8);
+  --calc-y: calc(100%-24px);
+}
+
+#plane {
+  position: fixed;
+  width: 50px;
+  /*1229 = 100vw (1536) * 0.8 (car X/2 - 60% = X*80%)
+  646 = 100vh (737.6) - 115.7 (hauteur div) + 24 (hauteur icon/2)*/
+  offset-path: path("M 1229 646 C 1329 646, 1329 550, 1429 550 Q 1479 500, 1429 450 L 250 400 Q 200 350, 250 300 Q 700 200, 1350 380");
+  offset-rotate: auto;
+  offset-distance: 0%;
+  animation: fly 5s ease-in forwards;
+}
+
+@keyframes fly {
+  0% {
+    offset-distance: 0%;
+  }
+
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+/* Bâtiment */
+#building {
+  position: fixed;
+  top: 50%;
+  left: 90%;
+  opacity: 1;
+}
+
+#buildingBis {
+  position: fixed;
+  top: 50%;
+  left: 92%;
+  opacity: 0;
+}
+
+/* Explosion */
+.explosion {
+  position: fixed;
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
+  animation: 0.5s ease-out forwards;
+}
