@@ -292,7 +292,8 @@
 
         // Déclencher l'explosion à la position du curseur
         document.addEventListener("click", function (event) {
-            if (event.target.id === "launchButton") return;
+            if (event.target.id === "launchButton") 
+            return;
 
             if (!isFlying) return;
             else {
@@ -310,7 +311,8 @@
             }
         });
 
-        sendBtn.addEventListener("click", animatePlane); // Handle clicks to the submit button
+        sendBtn.addEventListener("click", animatePlane); // Déclencher l'animation à chaque clic sur le bouton
+        sendBtn.addEventListener("click", handleSubmit); // Handle clicks to the send button
         form.addEventListener("submit", handleSubmit); // Handle default submit (e.g. pressing enter)
 
         const infoText = [
