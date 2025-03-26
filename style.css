@@ -192,22 +192,6 @@ body {
 
 }
 
-/* Animation */
-
-/* Bouton */
-/*#launchButton {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 15px 20px;
-  font-size: 16px;
-  background-color: orange;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  z-index: 10;
-}*/
-
 /* Conteneur de l'animation */
 #animationContainer {
   position: fixed;
@@ -216,24 +200,9 @@ body {
   width: 100%;
   height: 100%;
   display: none;
-  /* Caché par défaut */
 }
 
 /* Avion */
-/*#plane {
-  position: fixed;
-  bottom: 60px;
-  right: 280px;
-  width: 50px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}*/
-
-:root {
-  --calc-x: calc(100vw*0.8);
-  --calc-y: calc(100%-24px);
-}
-
 #plane {
   position: fixed;
   width: 50px;
@@ -245,6 +214,7 @@ body {
   animation: fly 5s ease-in forwards;
 }
 
+/* Animation de l'avion */
 @keyframes fly {
   0% {
     offset-distance: 0%;
