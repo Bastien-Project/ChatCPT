@@ -47,7 +47,8 @@
                     </div>
 
                 </div>
-                <p class="disclaimer">This site was created by <a href="https://github.com/Bastien-Project" target="_blank">THOMAS
+                <p class="disclaimer">This site was created by <a href="https://github.com/Bastien-Project"
+                        target="_blank">THOMAS
                         Bastien</a>
                     - Inspired by <a href="https://www.twitter.com/woutervd" target="_blank">VAN DIJKE Wouter</a> <br>
                     <a href="#" onclick="handleInfoClick()" id="infoBtn">Click here to learn more about this site</a>
@@ -63,7 +64,7 @@
         const form = document.getElementById('form');
         const infoBtn = document.getElementById('infoBtn');
         let userIsNaze = false;
-        let randomResponse = false;
+        //let randomResponse = false;
         let audio = '';
         let gif = true;
         let isFlying = false;
@@ -157,6 +158,7 @@
                 chatArea.appendChild(newBubbleContainer);
                 userInput.value = ""; // Clear the input vield
 
+                /*
                 // Generate a random character
                 function randomCharacter() {
                     // List of possible characters
@@ -193,35 +195,44 @@
                 }
 
                 randomResponse = false;
+                */
 
-                // Easter Egg
-                if (userString === 'Heil Hitler' && userIsNaze == false) {
+                // Nettoie et prépare la string
+                const cleanedInput = userString.replace(/[\.,!?"']/g, '').toLowerCase();
+                const firstTwoWords = cleanedInput.split(" ").slice(0, 2).join(" ");
+                const noAccentFirstTwoWords = firstTwoWords.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+                if (userString === 'Heil Hitler' && !userIsNaze) {
                     userIsNaze = true;
                     response = "Bienvenue dans le cercle des légendes.";
-                } else if (userIsNaze == true) {
+                } else if (userIsNaze) {
                     response = nazeResponse();
-                } else if (userString.replace(/[\.,!?"']/g, '').toLowerCase() == "coucou") {
+                } else if (cleanedInput === "coucou") {
                     response = '<img src="./images/coucou-jirachie.gif" alt="Description de l\'image">';
                     audio = new Audio("./images/coucou-miss-jirachi.mp3");
                     audio.play();
                 } else if (userString === "CPT") {
                     gif = false;
                     response = displayGif();
+                } else if (firstTwoWords.includes("fai") || firstTwoWords.includes("di") || noAccentFirstTwoWords.includes("ecri")) {
+                    response = "NON ! J'AI PAS ENVIE !";
+                    //response = nopeResponse(); //fonction a écrire
                 } else if (userString.split(' ').length > 200) {
                     response = "Ok." + userString.split(' ').length;
                 } else {
                     if (gif) {
-                        if (Math.round(Math.random() * 3) === 1) {
-                            response = displayGif();
-                        } else {
-                            randomResponse = true;
-                            response = randomPhrase();
-                        }
-                    } else {
+                        puter.ai.chat(userString).then((res) => {
+                            newBubble2.innerHTML = res;
+                        }).catch((err) => {
+                            newBubble2.innerHTML = "Erreur de l'IA.";
+                            console.error(err);
+                        });
+                    } /*else {
                         randomResponse = true;
                         response = randomPhrase();
-                    }
+                    }*/
                 }
+
 
                 // Show the ChatCPT response in a new chat-gpt-bubble, wrapped in a chat-bubble-container
                 let newBubble2Container = document.createElement("div");
@@ -239,7 +250,7 @@
                 if (!randomResponse) {
                     newBubble2.innerHTML = response; // If the response is not random, show it immediately
                 }
-                else {
+                /*else {
                     let meowLoop = setInterval(() => { // Interval to show more of the reply every 100 milliseconds (simulating typing behaviour)
                         if (currentMeow < response.length) {
                             currentMeow += Math.floor(Math.random() * 10); // Show between 0 and 10 more characters
@@ -250,7 +261,7 @@
                             userInput.focus(); // Focus the input again, so user can type a new response
                         }
                     }, 100);
-                }
+                }*/
             }
         }
 
@@ -260,40 +271,37 @@
             let buildingBis = document.getElementById("buildingBis");
             let animationContainer = document.getElementById("animationContainer");
 
-            // Si l'avion vole déjà, déclencher l'explosion immédiatement
             if (isFlying) return;
 
-            isFlying = true; // L'avion commence à voler
+            isFlying = true;
 
-            // Réinitialiser l'affichage
             animationContainer.style.display = "block";
             plane.style.opacity = "1";
-            building.style.opacity = "1";
-            buildingBis.style.opacity = "1";
-            plane.style.animation = "none"; // Supprimer l'animation précédente
+            building.style.opacity = "0"; // A CHANGER EN 1
+            buildingBis.style.opacity = "0"; // A CHANGER EN 1
+            plane.style.animation = "none";
 
-            // Forcer un reflow pour relancer l'animation
+            // Forcer un reflow pour redémarrer l'animation
             void plane.offsetWidth;
 
-            // Lancer l'animation
-            plane.style.animation = "fly 4s ease-in-out forwards"; // Zigzag durant 4s
+            // Définir l'animation CSS pour le vol de l'avion
+            plane.style.animation = "fly 4s ease-in-out forwards";
 
-            // Fin de l'animation après 4s
             setTimeout(() => {
-                isFlying = false; // L'avion a terminé son vol
+                isFlying = false;
                 plane.style.opacity = "0";
                 building.style.opacity = "0";
                 buildingBis.style.opacity = "0";
                 setTimeout(() => {
-                    animationContainer.style.display = "none"; // Tout cacher après disparition
+                    animationContainer.style.display = "none";
                 }, 500);
             }, 4000);
         };
 
         // Déclencher l'explosion à la position du curseur
         document.addEventListener("click", function (event) {
-            if (event.target.id === "launchButton") 
-            return;
+            if (event.target.id === "launchButton")
+                return;
 
             if (!isFlying) return;
             else {
@@ -304,7 +312,6 @@
                 explosion.style.top = (event.clientY - 75) + "px";
                 document.body.appendChild(explosion);
 
-                // Supprimer l'explosion après 1 seconde
                 setTimeout(() => {
                     explosion.remove();
                 }, 2000);
@@ -357,6 +364,7 @@
     </script>
 
     <script type="text/javascript" src="script.js"> </script>
+    <script src="https://js.puter.com/v2/"></script>
 
 </body>
 
