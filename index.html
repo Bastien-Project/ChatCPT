@@ -64,7 +64,6 @@
         const form = document.getElementById('form');
         const infoBtn = document.getElementById('infoBtn');
         let userIsNaze = false;
-        //let randomResponse = false;
         let audio = '';
         let gif = true;
         let isFlying = false;
@@ -140,6 +139,41 @@
             }
         }
 
+        // Function to display a random "nope" response
+        var res = [];
+
+        function nopeResponse() {
+            var nopeRes = [
+                "NON, J'AI PAS ENVIE !",
+                "Fais le toi-même !",
+                "Flemme !",
+                "Je ne suis pas ton esclave !",
+                "Tu veux que je fasse quoi ?",
+                "Tu es sérieux ? Jamais de la vie.",
+                "Je suis pas certains de te répondre, j'ai la flemme.",
+                "Démerde-toi tout seul !",
+                "Franchement tu crains de pas pouvoir le faire tout seul.",
+            ];
+
+            if (res.length == nopeRes.length) {
+                res = [];
+            }
+
+            var choice;
+
+            do {
+                choice = Math.floor(Math.random() * nopeRes.length);
+            } while (res.includes(choice));
+
+            res.push(choice);
+
+            if (choice >= 0 && choice < nopeRes.length) {
+                return nopeRes[choice];
+            } else {
+                return 'Erreur, tu as cassé encore plus ChatCPT.';
+            }
+
+        }
 
         function handleSubmit(event) {
             event.preventDefault(); // Prevent refresh on form submission
@@ -199,8 +233,7 @@
                     newBubble2.innerHTML = displayGif();
                     handled = true;
                 } else if (firstTwoWords.includes("fai") || firstTwoWords.includes("di") || noAccentFirstTwoWords.includes("ecri")) {
-                    newBubble2.innerHTML = "NON ! J'AI PAS ENVIE !";
-                    // newBubble2.innerHTML = nopeResponse(); // fonction à faire
+                    newBubble2.innerHTML = nopeResponse();
                     handled = true;
                 } else if (userString.split(' ').length > 200) {
                     newBubble2.innerHTML = "Ok." + userString.split(' ').length;
@@ -233,8 +266,8 @@
 
             animationContainer.style.display = "block";
             plane.style.opacity = "1";
-            building.style.opacity = "0"; // A CHANGER EN 1
-            buildingBis.style.opacity = "0"; // A CHANGER EN 1
+            building.style.opacity = "1";
+            buildingBis.style.opacity = "1";
             plane.style.animation = "none";
 
             // Forcer un reflow pour redémarrer l'animation
