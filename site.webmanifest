@@ -1,6 +1,9 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "ChatCPT - L'IA de la flemme",
+  "short_name": "ChatCPT",
+  "description": "ChatCPT est une version alternative de chatGPT.",
+  "start_url": "/index.html",
+  "scope": "/",
   "icons": [
     {
       "src": "/favicons/android-chrome-192x192.png",
@@ -11,9 +14,21 @@
       "src": "/favicons/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/favicons/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicons/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
     }
   ],
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "orientation": "any",
+  "lang": "fr-FR"
 }

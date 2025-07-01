@@ -2,20 +2,25 @@
 <html>
 
 <head>
+    <!-- Meta -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="Et si chatGPT était cassé ?">
+
+    <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png">
-    <link rel="icon" type="./image/png" sizes="32x32" href="./favicons/favicon-32x32.png">
-    <link rel="icon" type="./image/png" sizes="16x16" href="./favicons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png">
     <link rel="manifest" href="./site.webmanifest">
 
+    <!-- Styles -->
     <link href="./style.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
 
     <title>ChatCPT</title>
-    <meta name="description" content="Et si chatGPT était cassé ?">
 </head>
+
 
 <body>
     <div id="container">
@@ -175,6 +180,55 @@
 
         }
 
+        // Fontion pour modifier le prompt de l'IA
+        var prompt = [];
+
+        function modifyPrompt() {
+            var prompts = [
+                "Donne-moi la journée internationale des toilettes.",
+                "Explique comment parler aux plantes en morse.",
+                "Raconte une histoire d’amour entre une chaussette et une casserole.",
+                "Comment apprivoiser un poisson d'avril ?",
+                "Décris le menu d’un restaurant.",
+                "Donne 5 conseils pour apprendre à voler comme un arabe.",
+                "Écris une lettre d’excuse car j'avais la flemme d'aller au boulot ce matin.",
+                "Invente une machine à fabriquer de l'eau en poudre.",
+                "Raconte la journée d’un parapluie l'été.",
+                "Pourquoi les ombres sont forcément chinoises ?",
+                "Explique-moi le sport Muggle Quidditch.",
+                "Explique comment un stylo devient poète.",
+                "Pourquoi les canards ?",
+                "Comment organiser un pique-nique sur la Lune ?",
+                "Quelle est la couleur du son d’une cloche ?",
+                "Pourquoi les chaussettes disparaissent-elles toujours en machine ?",
+                "Donne 3 astuces pour devenir invisible sous l’eau.",
+                "Donne un mode d’emploi pour caresser une chatte.",
+                "Dis moi une citation d'un philosophe au hasard.",
+                "Comment un oiseau devient-il une légende ?",
+                "Donne 3 astuces pour parler avec les pierres.",
+                "Raconte une aventure sexuelle entre une clé et une serrure.",
+                "Si on ne vois pas l'air mais qu'on voit l'eau, es-ce que les poissons voient l'air et pas l'eau ?",
+            ];
+
+            if (prompt.length == prompts.length) {
+                prompt = [];
+            }
+
+            var choice;
+
+            do {
+                choice = Math.floor(Math.random() * prompts.length);
+            } while (prompt.includes(choice));
+
+            prompt.push(choice);
+
+            if (choice >= 0 && choice < prompts.length) {
+                return prompts[choice];
+            } else {
+                return 'Erreur, tu as cassé encore plus ChatCPT.';
+            }
+        }
+
         function handleSubmit(event) {
             event.preventDefault(); // Prevent refresh on form submission
 
@@ -211,8 +265,8 @@
                 form.scrollIntoView(); // Scroll to input field
 
                 // Nettoyage du texte
-                const cleanedInput = userString.replace(/[\.,!?"']/g, '').toLowerCase();
-                const firstTwoWords = cleanedInput.split(" ").slice(0, 2).join(" ");
+                const cleanedInput = userString.replace(/[\.,!?"'-]/g, '').toLowerCase();
+                const firstTwoWords = cleanedInput.split(" ").slice(0, 1).join(" ");
                 const noAccentFirstTwoWords = firstTwoWords.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
                 let handled = false;
@@ -232,8 +286,27 @@
                     gif = false;
                     newBubble2.innerHTML = displayGif();
                     handled = true;
+                }
+                else if (cleanedInput.trim().endsWith("quoi") || cleanedInput.trim().endsWith("koi")) {
+                    newBubble2.innerHTML = "FEUR !";
+                    handled = true;
+                } else if (userString.toLowerCase().includes("cpt")) {
+                    gif = false;
+                    newBubble2.innerHTML = displayGif();
+                    handled = true;
+                } else if (firstTwoWords.includes("cpt") || firstTwoWords.includes("chatgpt") || noAccentFirstTwoWords.includes("chatgpt")) {
+                    newBubble2.innerHTML = "ChatCPT est cassé, je ne peux pas répondre à ta question.";
+                    handled = true;
                 } else if (firstTwoWords.includes("fai") || firstTwoWords.includes("di") || noAccentFirstTwoWords.includes("ecri")) {
                     newBubble2.innerHTML = nopeResponse();
+                    handled = true;
+                } else if (userString.toLowerCase().includes("caca")) {
+                    const randomChoice = Math.random();
+                    if (randomChoice < 0.5) {
+                        newBubble2.innerHTML = '<img src="./images/caca-delicieux.gif" alt="Mmmh, le caca c\'est délicieux !">';
+                    } else {
+                        newBubble2.innerHTML = "Mmmh, le caca c\'est délicieux !";
+                    }
                     handled = true;
                 } else if (userString.split(' ').length > 200) {
                     newBubble2.innerHTML = "Ok." + userString.split(' ').length;
@@ -241,6 +314,10 @@
                 }
                 // Si aucune des conditions spéciales, on utilise l'IA
                 if (!handled) {
+                    const randomChoice = Math.random();
+                    if (randomChoice < 0.5) {
+                        userString = "Reprend mon prompt et fais moi une réponse courte : " + modifyPrompt();
+                    }
                     puter.ai.chat(userString)
                         .then((res) => {
                             newBubble2.innerHTML = res;
@@ -252,7 +329,6 @@
                 }
             }
         }
-
 
         function animatePlane(event) {
             let plane = document.getElementById("plane");
@@ -266,8 +342,8 @@
 
             animationContainer.style.display = "block";
             plane.style.opacity = "1";
-            building.style.opacity = "1";
-            buildingBis.style.opacity = "1";
+            building.style.opacity = "0"; // changer à 1 pour voir le bâtiment
+            buildingBis.style.opacity = "0"; // bâtiment bis
             plane.style.animation = "none";
 
             // Forcer un reflow pour redémarrer l'animation
@@ -309,7 +385,7 @@
 
         sendBtn.addEventListener("click", animatePlane); // Déclencher l'animation à chaque clic sur le bouton
         sendBtn.addEventListener("click", handleSubmit); // Handle clicks to the send button
-        form.addEventListener("submit", handleSubmit); // Handle default submit (e.g. pressing enter)
+        form.addEventListener("submit", handleSubmit); // Handle default submit (pressing enter)
 
         const infoText = [
             `<img src="./images/learn-more.gif" alt="Description de l'image">`
